@@ -1,4 +1,3 @@
- 
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -22,7 +21,7 @@ class DashboardScreen extends StatelessWidget {
           Positioned(
             top: 63 * h,
             left: 30 * w,
-            child: Container(
+            child: SizedBox(
               width: 371 * w,
               height: 61 * h,
               // color: Colors.grey,
@@ -225,6 +224,223 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  Positioned(
+                    top: 71 * h,
+                    left: 118 * w,
+                    child: SizedBox(
+                      width: 107 * w,
+                      height: 20 * h,
+                      child: Center(
+                        child: Text(
+                          "SAR 3945.00",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 12 * w,
+                            fontWeight: FontWeight.w400, // Regular
+                            height: 1.0, // line-height: 100%
+                            letterSpacing: 0,
+                            color:
+                                Colors.white, // use white for dark background
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 118 * h,
+                    left: 49 * w,
+                    child: Container(
+                      width: 305.5 * w,
+                      height: 160.5 * h,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF007FA7), // solid blue at top
+                            Color(0x00000000), // transparent at bottom
+                          ],
+                        ),
+                      ),
+                      child: Image.asset("assets/images/Vector 1.png"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 90 * h,
+                    left: 152 * w,
+                    child: Container(
+                      width: 1, // thickness
+                      height: 190 * h, // length
+                      color: const Color(0xFFE3E3E3),
+                    ),
+                  ),
+                  Positioned(
+                    top: 283 * h,
+                    left: 27 * w,
+                    child: Container(
+                      width: 328 * w,
+                      height: 1,
+                      color: const Color(0xFF1C3347),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 116 * h,
+                    left: 27 * w,
+                    child: Container(
+                      width: 328 * w,
+                      height: 1,
+                      color: const Color(0xFF1C3347),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 239 * h,
+                    left: 27 * w,
+                    child: Container(
+                      width: 328 * w,
+                      height: 1,
+                      color: const Color(0xFF1C3347),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 198 * h,
+                    left: 27 * w,
+                    child: Container(
+                      width: 328 * w,
+                      height: 1,
+                      color: const Color(0xFF1C3347),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 157 * h,
+                    left: 27 * w,
+                    child: Container(
+                      width: 328 * w,
+                      height: 1,
+                      color: const Color(0xFF1C3347),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 258 * h,
+                    left: 26 * w,
+                    child: SizedBox(
+                      width: 7 * w,
+                      height: 15 * h,
+                      child: Text(
+                        "0",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 10 * w,
+                          fontWeight: FontWeight.w400,
+                          height: 1.0,
+                          letterSpacing: 0,
+                          color: const Color(0xFF8F8F8F),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 334 * h,
+                    left: 25 * w,
+                    child: Container(
+                      width: 32 * w,
+                      height: 32 * w,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF131313),
+                        borderRadius: BorderRadius.circular(3 * w),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 6 * h,
+                            left: 9 * w,
+                            child: SizedBox(
+                              width: 14 * w,
+                              height: 21 * h,
+                              child: Center(
+                                child: Text(
+                                  "01",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14 * w,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.0,
+                                    letterSpacing: -1,
+                                    color:
+                                        Colors.white, // use white for dark bg
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 334 * h,
+                    left: 68 * w,
+                    child: Container(
+                      width: 32 * w,
+                      height: 32 * w,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2489E7),
+                        borderRadius: BorderRadius.circular(3 * w),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 6 * h,
+                            left: 9 * w,
+                            child: SizedBox(
+                              width: 14 * w,
+                              height: 21 * h,
+                              child: Center(
+                                child: Text(
+                                  "02",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14 * w,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.0,
+                                    letterSpacing: -1,
+                                    color:
+                                        Colors.white, // use white for dark bg
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Positioned(
+                  //   top: 118,
+                  //   left: 49,
+                  //   child: Container(
+                  //     width: 304,
+                  //     height: 142,
+                  //     decoration: BoxDecoration(
+                  //       color: const Color(0xFF981B1B), // background
+                  //       border: Border.all(
+                  //         color: const Color(0xFF0A9BC9), // border color
+                  //         width: 1,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

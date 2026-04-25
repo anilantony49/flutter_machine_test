@@ -2,27 +2,35 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vikn_codes_flutter_task/screens/second_screen.dart';
+import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    const baseWidth = 430;
+    const baseHeight = 932;
+
+    final w = screenWidth / baseWidth;
+    final h = screenHeight / baseHeight;
     return Scaffold(
       body: SizedBox(
-        width: 430,
-        height: 932,
+        width: 430 * w,
+        height: 932 * h,
         child: Container(
           color: const Color(0xFF000000), // background: #000000
           child: Stack(
             children: [
               Positioned(
-                top: 247,
-                left: -12,
-                child: Container(
-                  width: 507,
-                  height: 714,
+                top: 247 * h,
+                left: -12 * w,
+                child: SizedBox(
+                  width: 507 * w,
+                  height: 714 * h,
                   child: Stack(
                     children: [
                       ImageFiltered(
@@ -31,8 +39,8 @@ class LoginScreen extends StatelessWidget {
                           sigmaY: 110,
                         ),
                         child: Container(
-                          width: 124,
-                          height: 124,
+                          width: 124 * w,
+                          height: 124 * h,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Color(0xFFEEF223),
@@ -40,16 +48,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 486,
-                        left: 62,
+                        top: 486 * h,
+                        left: 62 * w,
                         child: ImageFiltered(
                           imageFilter: ImageFilter.blur(
                             sigmaX: 100, // adjust for spread
                             sigmaY: 100,
                           ),
                           child: Container(
-                            width: 124,
-                            height: 124,
+                            width: 124 * w,
+                            height: 124 * h,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color(0xFFFC6BFF),
@@ -58,16 +66,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 187,
-                        left: 383,
+                        top: 187 * h,
+                        left: 383 * w,
                         child: ImageFiltered(
                           imageFilter: ImageFilter.blur(
                             sigmaX: 85, // adjust for spread
                             sigmaY: 85,
                           ),
                           child: Container(
-                            width: 124,
-                            height: 124,
+                            width: 124 * w,
+                            height: 124 * h,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color(0xFF00D0FE),
@@ -82,20 +90,20 @@ class LoginScreen extends StatelessWidget {
 
               // Icon
               Positioned(
-                top: 85,
-                left: 316,
+                top: 85 * h,
+                left: 316 * w,
                 child: Image.asset(
                   "assets/images/language-hiragana.png",
-                  width: 24,
-                  height: 24,
+                  width: 24 * w,
+                  height: 24 * h,
                   fit: BoxFit.contain,
                 ),
               ),
 
               // English Text
               Positioned(
-                top: 88,
-                left: 345,
+                top: 88 * h,
+                left: 345 * w,
                 child: GestureDetector(
                   onTap: () {
                     // Navigate: None (as per your spec)
@@ -108,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                       "English",
                       textAlign: TextAlign.right,
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: 14 * w,
                         fontWeight: FontWeight.w400,
                         height: 1.0, // line-height: 100%
                         letterSpacing: 0,
@@ -120,8 +128,8 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 304,
-                left: 189,
+                top: 304 * h,
+                left: 189 * w,
                 child: GestureDetector(
                   onTap: () {
                     // Navigate: None (as per your spec)
@@ -130,14 +138,14 @@ class LoginScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 500),
                     opacity: 1, // always visible (no state change here)
                     curve: Curves.linear,
-                    child: Container(
-                      height: 52,
-                      width: 52,
+                    child: SizedBox(
+                      height: 52 * h,
+                      width: 52 * w,
                       child: Text(
                         "Login",
                         textAlign: TextAlign.right,
                         style: GoogleFonts.poppins(
-                          fontSize: 21,
+                          fontSize: 21 * w,
                           fontWeight: FontWeight.w500,
                           height: 1.0, // line-height: 100%
                           letterSpacing: -1,
@@ -150,16 +158,16 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 336,
-                left: 117,
-                child: Container(
-                  height: 23,
-                  width: 196,
+                top: 336 * h,
+                left: 117 * w,
+                child: SizedBox(
+                  height: 23 * h,
+                  width: 196 * w,
                   child: Text(
                     "Login to your vikn account",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontSize: 15,
+                      fontSize: 15 * w,
                       fontWeight: FontWeight.w400,
                       height: 1.0, // line-height: 100%
                       letterSpacing: 0,
@@ -170,11 +178,11 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 386,
-                left: 36,
+                top: 386 * h,
+                left: 36 * w,
                 child: Container(
-                  width: 358,
-                  height: 119,
+                  width: 358 * w,
+                  height: 119 * h,
                   decoration: BoxDecoration(
                     color: const Color(0xFF08131E),
                     borderRadius: BorderRadius.circular(11),
@@ -186,12 +194,12 @@ class LoginScreen extends StatelessWidget {
                   child: Stack(
                     children: [
                       Positioned(
-                        top: 11,
-                        left: 60,
+                        top: 11 * h,
+                        left: 60 * w,
                         child: Text(
                           "Username",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: 14 * w,
                             fontWeight: FontWeight.w400,
                             height: 1.0,
                             letterSpacing: 0,
@@ -201,18 +209,18 @@ class LoginScreen extends StatelessWidget {
                       ),
 
                       Positioned(
-                        top: 25,
-                        left: 60,
+                        top: 25 * h,
+                        left: 60 * w,
                         child: Container(
-                          width: 118,
-                          height: 23,
+                          width: 118 * w,
+                          height: 23 * h,
                           alignment:
                               Alignment.centerLeft, // text starts from left
                           // color: const Color(0xFFFFFFFF), // background: #FFFFFF
                           child: Text(
                             "Savadfarooque",
                             style: GoogleFonts.poppins(
-                              fontSize: 15,
+                              fontSize: 15 * w,
                               fontWeight: FontWeight.w500, // Medium
                               height: 1.0, // line-height: 100%
                               letterSpacing: 0,
@@ -222,34 +230,33 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 59,
-                        left: 1,
+                        top: 59 * h,
+                        left: 1 * w,
                         child: Container(
-                          width: 358,
-                          height: 1, // use 1 instead of 0 to make it visible
+                          width: 358 * w,
+                          height:
+                              1 * h, // use 1 instead of 0 to make it visible
                           color: const Color(0xFF1C3347), // border color
                         ),
                       ),
                       Positioned(
-                        top: 70,
-                        left: 60,
+                        top: 70 * h,
+                        left: 60 * w,
 
-                        child: Container(
-                          width: 275,
-                          height: 32,
+                        child: SizedBox(
+                          width: 275 * w,
+                          height: 32 * h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                child: Text(
-                                  "Username",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.0,
-                                    letterSpacing: 0,
-                                    color: const Color(0xFF7D7D7D),
-                                  ),
+                              Text(
+                                "Username",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14 * w,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.0,
+                                  letterSpacing: 0,
+                                  color: const Color(0xFF7D7D7D),
                                 ),
                               ),
                             ],
@@ -261,34 +268,34 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 404,
-                left: 55,
+                top: 404 * h,
+                left: 55 * w,
                 child: Image.asset(
                   "assets/images/user-2.png",
-                  width: 24,
-                  height: 24,
+                  width: 24 * w,
+                  height: 24 * h,
                   fit: BoxFit.contain,
                 ),
               ),
 
               Positioned(
-                top: 463,
-                left: 56,
+                top: 463 * h,
+                left: 56 * w,
                 child: Image.asset(
                   "assets/images/key-round.png",
-                  width: 24,
-                  height: 24,
+                  width: 24 * w,
+                  height: 24 * h,
                   fit: BoxFit.contain,
                 ),
               ),
 
               Positioned(
-                top: 534,
-                left: 140,
+                top: 534 * h,
+                left: 140 * w,
                 child: Text(
                   "Forgotten Password?",
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: 16 * w,
                     fontWeight: FontWeight.w400,
                     height: 1.0,
                     letterSpacing: 0,
@@ -298,8 +305,8 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 593,
-                left: 152,
+                top: 593 * h,
+                left: 152 * w,
                 child: GestureDetector(
                   onTap: () {
                     // Navigate to: "iPhone 14 Pro Max - 2"
@@ -307,7 +314,7 @@ class LoginScreen extends StatelessWidget {
                       context,
                       PageRouteBuilder(
                         transitionDuration: const Duration(milliseconds: 300),
-                        pageBuilder: (_, __, ___) => const SecondScreen(),
+                        pageBuilder: (_, __, ___) => const DashboardScreen(),
                         transitionsBuilder: (_, animation, __, child) {
                           return FadeTransition(
                             opacity: animation, // smart animate (approx)
@@ -320,8 +327,8 @@ class LoginScreen extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeOut,
-                    width: 125,
-                    height: 48,
+                    width: 125 * w,
+                    height: 48 * h,
                     padding: const EdgeInsets.fromLTRB(22, 12, 22, 12),
                     decoration: BoxDecoration(
                       color: const Color(0xFF0E75F4), // background
@@ -336,12 +343,12 @@ class LoginScreen extends StatelessWidget {
                           style: GoogleFonts.poppins(
                             color: Colors.white,
                             height: 1.0,
-                            fontSize: 16,
+                            fontSize: 16 * w,
                             letterSpacing: -1,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(width: 9), // gap: 9px
+                        SizedBox(width: 9 * w), // gap: 9px
                         Icon(
                           Icons.arrow_forward,
                           color: Colors.white,
@@ -354,18 +361,18 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 809,
-                left: 124,
+                top: 809 * h,
+                left: 124 * w,
                 child: Container(
-                  width: 179,
-                  height: 23,
+                  width: 179 * w,
+                  height: 23 * h,
                   alignment: Alignment.center,
                   // color: const Color(0xFFFFFFFF), // background: #FFFFFF
                   child: Text(
                     "Don’t have an Account?",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontSize: 15,
+                      fontSize: 15 * w,
                       fontWeight: FontWeight.w400,
                       height: 1.0, // line-height: 100%
                       letterSpacing: 0,
@@ -376,12 +383,12 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Positioned(
-                top: 836,
-                left: 167,
+                top: 836 * h,
+                left: 167 * w,
                 child: Text(
                   "Sign up now!",
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: 16 * w,
                     fontWeight: FontWeight.w500,
                     height: 1.0,
                     letterSpacing: -1,

@@ -3,9 +3,39 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
+import '../data/datasources/auth_remote_data_source.dart';
+import '../data/repositories/auth_repository_impl.dart';
+import '../domain/usecases/login_usecase.dart';
+import '../presentation/controllers/login_controller.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  late final LoginController _loginController;
+
+  @override
+  void initState() {
+    super.initState();
+    final remoteDataSource = AuthRemoteDataSourceImpl();
+    final repository = AuthRepositoryImpl(remoteDataSource: remoteDataSource);
+    final loginUseCase = LoginUseCase(repository);
+    _loginController = LoginController(loginUseCase: loginUseCase);
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    _loginController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +47,7 @@ class LoginScreen extends StatelessWidget {
 
     final w = screenWidth / baseWidth;
     final h = screenHeight / baseHeight;
+
     return Scaffold(
       body: SizedBox(
         width: 430 * w,
@@ -176,13 +207,105 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              //TextField Container
+              // Positioned(
+              //   top: 386 * h,
+              //   left: 36 * w,
+              //   child: Container(
+              //     width: 358 * w,
+              //     height: 119 * h,
+              //     decoration: BoxDecoration(
+              //       color: const Color(0xFF08131E),
+              //       borderRadius: BorderRadius.circular(11),
+              //       border: Border.all(
+              //         color: const Color(0xFF1C3347),
+              //         width: 1,
+              //       ),
+              //     ),
+              //     child: Stack(
+              //       children: [
+              //         Positioned(
+              //           top: 11 * h,
+              //           left: 60 * w,
+              //           child: Text(
+              //             "Username",
+              //             style: GoogleFonts.poppins(
+              //               fontSize: 14 * w,
+              //               fontWeight: FontWeight.w400,
+              //               height: 1.0,
+              //               letterSpacing: 0,
+              //               color: const Color(0xFF7D7D7D),
+              //             ),
+              //           ),
+              //         ),
 
+              //         Positioned(
+              //           top: 25 * h,
+              //           left: 60 * w,
+              //           child: Container(
+              //             width: 118 * w,
+              //             height: 23 * h,
+              //             alignment:
+              //                 Alignment.centerLeft, // text starts from left
+              //             // color: const Color(0xFFFFFFFF), // background: #FFFFFF
+              //             child: Text(
+              //               "Savadfarooque",
+              //               style: GoogleFonts.poppins(
+              //                 fontSize: 15 * w,
+              //                 fontWeight: FontWeight.w500, // Medium
+              //                 height: 1.0, // line-height: 100%
+              //                 letterSpacing: 0,
+              //                 color: Colors.white,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Positioned(
+              //           top: 59 * h,
+              //           left: 1 * w,
+              //           child: Container(
+              //             width: 358 * w,
+              //             height:
+              //                 1 * h, // use 1 instead of 0 to make it visible
+              //             color: const Color(0xFF1C3347), // border color
+              //           ),
+              //         ),
+              //         Positioned(
+              //           top: 70 * h,
+              //           left: 60 * w,
+
+              //           child: SizedBox(
+              //             width: 275 * w,
+              //             height: 32 * h,
+              //             child: Column(
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Text(
+              //                   "Username",
+              //                   style: GoogleFonts.poppins(
+              //                     fontSize: 14 * w,
+              //                     fontWeight: FontWeight.w400,
+              //                     height: 1.0,
+              //                     letterSpacing: 0,
+              //                     color: const Color(0xFF7D7D7D),
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
+              // TextField Container
               Positioned(
                 top: 386 * h,
                 left: 36 * w,
                 child: Container(
                   width: 358 * w,
-                  height: 119 * h,
+                  // height: 119 * h,
                   decoration: BoxDecoration(
                     color: const Color(0xFF08131E),
                     borderRadius: BorderRadius.circular(11),
@@ -191,75 +314,60 @@ class LoginScreen extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  child: Stack(
+                  child: Column(
                     children: [
-                      Positioned(
-                        top: 11 * h,
-                        left: 60 * w,
-                        child: Text(
-                          "Username",
+                      /// 🔹 USERNAME FIELD
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 60 * w,
+                          vertical: 8 * h,
+                        ),
+                        child: TextFormField(
+                          controller: usernameController,
                           style: GoogleFonts.poppins(
-                            fontSize: 14 * w,
-                            fontWeight: FontWeight.w400,
-                            height: 1.0,
-                            letterSpacing: 0,
-                            color: const Color(0xFF7D7D7D),
+                            fontSize: 15 * w,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
                           ),
-                        ),
-                      ),
-
-                      Positioned(
-                        top: 25 * h,
-                        left: 60 * w,
-                        child: Container(
-                          width: 118 * w,
-                          height: 23 * h,
-                          alignment:
-                              Alignment.centerLeft, // text starts from left
-                          // color: const Color(0xFFFFFFFF), // background: #FFFFFF
-                          child: Text(
-                            "Savadfarooque",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15 * w,
-                              fontWeight: FontWeight.w500, // Medium
-                              height: 1.0, // line-height: 100%
-                              letterSpacing: 0,
-                              color: Colors.white,
+                          decoration: InputDecoration(
+                            labelText: "Username",
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 14 * w,
+                              color: const Color(0xFF7D7D7D),
                             ),
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 59 * h,
-                        left: 1 * w,
-                        child: Container(
-                          width: 358 * w,
-                          height:
-                              1 * h, // use 1 instead of 0 to make it visible
-                          color: const Color(0xFF1C3347), // border color
-                        ),
-                      ),
-                      Positioned(
-                        top: 70 * h,
-                        left: 60 * w,
 
-                        child: SizedBox(
-                          width: 275 * w,
-                          height: 32 * h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Username",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14 * w,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.0,
-                                  letterSpacing: 0,
-                                  color: const Color(0xFF7D7D7D),
-                                ),
-                              ),
-                            ],
+                      /// 🔹 DIVIDER
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: const Color(0xFF1C3347),
+                      ),
+
+                      /// 🔹 PASSWORD FIELD
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 60 * w,
+                          vertical: 8 * h,
+                        ),
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText: false,
+                          style: GoogleFonts.poppins(
+                            fontSize: 15 * w,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 14 * w,
+                              color: const Color(0xFF7D7D7D),
+                            ),
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
@@ -308,21 +416,49 @@ class LoginScreen extends StatelessWidget {
                 top: 593 * h,
                 left: 152 * w,
                 child: GestureDetector(
-                  onTap: () {
-                    // Navigate to: "iPhone 14 Pro Max - 2"
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 300),
-                        pageBuilder: (_, __, ___) => const DashboardScreen(),
-                        transitionsBuilder: (_, animation, __, child) {
-                          return FadeTransition(
-                            opacity: animation, // smart animate (approx)
-                            child: child,
-                          );
-                        },
-                      ),
+                  onTap: () async {
+                    if (usernameController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please fill all required fields'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (_loginController.isLoading) return;
+
+                    final success = await _loginController.login(
+                      usernameController.text,
+                      passwordController.text,
                     );
+
+                    if (success) {
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder: (_, __, ___) => const DashboardScreen(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            _loginController.errorMessage ?? 'Login failed',
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
@@ -338,21 +474,41 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       // mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "Sign in",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            height: 1.0,
-                            fontSize: 16 * w,
-                            letterSpacing: -1,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(width: 9 * w), // gap: 9px
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 20,
+                        AnimatedBuilder(
+                          animation: _loginController,
+                          builder: (context, child) {
+                            if (_loginController.isLoading) {
+                              return const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
+                                ),
+                              );
+                            }
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Sign in",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    height: 1.0,
+                                    fontSize: 16 * w,
+                                    letterSpacing: -1,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(width: 9 * w), // gap: 9px
+                                const Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),

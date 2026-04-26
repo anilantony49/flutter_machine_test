@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
-import 'package:vikn_codes_flutter_task/screens/login_screen.dart';
-import 'package:vikn_codes_flutter_task/screens/profile_screen.dart';
-import 'package:vikn_codes_flutter_task/screens/sales_list_screen.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/filter_page.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/login_screen.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/profile_screen.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/sales_list_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SalesListScreen(),
+      home: const FilterPage(),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
 import 'package:vikn_codes_flutter_task/widgets/invoice_box_row_widget.dart';
 
 class SalesListScreen extends StatefulWidget {

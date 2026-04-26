@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
-import '../data/datasources/auth_remote_data_source.dart';
-import '../data/repositories/auth_repository_impl.dart';
-import '../domain/usecases/login_usecase.dart';
-import '../presentation/controllers/login_controller.dart';
+import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
+import '../../data/datasources/auth_remote_data_source.dart';
+import '../../data/repositories/auth_repository_impl.dart';
+import '../../domain/usecases/login_usecase.dart';
+import '../controllers/login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

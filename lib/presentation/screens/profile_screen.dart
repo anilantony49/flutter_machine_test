@@ -1,13 +1,42 @@
-import 'dart:ui';
-
+ 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
 import 'package:vikn_codes_flutter_task/presentation/screens/login_screen.dart';
 import 'package:vikn_codes_flutter_task/widgets/bottom_nav_widget.dart';
+import '../../data/datasources/profile_remote_data_source.dart';
+import '../../data/repositories/profile_repository_impl.dart';
+import '../../domain/usecases/profile_usecases.dart';
+import '../controllers/profile_controller.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final ProfileController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final remote = ProfileRemoteDataSourceImpl();
+    final repo = ProfileRepositoryImpl(remoteDataSource: remote);
+    final getProfileUseCase = GetProfileUseCase(repo);
+    final logoutUseCase = LogoutUseCase(repo);
+    _controller = ProfileController(
+      getProfileUseCase: getProfileUseCase,
+      logoutUseCase: logoutUseCase,
+    );
+    _controller.fetchProfile();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,152 +45,222 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
-          children: [
-            /// 🔹 TOP CARD
-            Padding(
-              padding: EdgeInsets.only(
-                left: 18 * w,
-                top: 63 * w,
-                right: 18 * w,
-              ),
-              child: Container(
-                padding: EdgeInsets.all(20 * w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F0F0F),
-                  borderRadius: BorderRadius.circular(44),
-                ),
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            if (_controller.isLoading && _controller.profile == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (_controller.errorMessage != null &&
+                _controller.profile == null) {
+              return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    /// PROFILE ROW
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Text(
+                      _controller.errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () => _controller.fetchProfile(),
+                      child: const Text("Retry"),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            final profile = _controller.profile;
+
+            return Column(
+              children: [
+                /// 🔹 TOP CARD
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 18 * w,
+                    top: 63 * w,
+                    right: 18 * w,
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(20 * w),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0F0F0F),
+                      borderRadius: BorderRadius.circular(44),
+                    ),
+                    child: Column(
                       children: [
+                        /// PROFILE ROW
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            /// AVATAR
-                            Container(
-                              width: 100 * w,
-                              height: 100 * w,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(33),
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                  "assets/images/pngaaa 1.png",
-                                  width: 55 * w,
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(width: 14 * w),
-
-                            /// NAME
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
                               children: [
-                                Text(
-                                  "David Arnold",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20 * w,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
+                                /// AVATAR
+                                Container(
+                                  width: 100 * w,
+                                  height: 100 * w,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(33),
+                                  ),
+                                  child: Center(
+                                    child:
+                                        profile?.profilePic != null
+                                            ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(33),
+                                              child: Image.network(
+                                                profile!.profilePic!,
+                                                width: 100 * w,
+                                                height: 100 * w,
+                                                fit: BoxFit.cover,
+                                                errorBuilder:
+                                                    (
+                                                      context,
+                                                      error,
+                                                      stackTrace,
+                                                    ) => Image.asset(
+                                                      "assets/images/pngaaa 1.png",
+                                                      width: 55 * w,
+                                                    ),
+                                              ),
+                                            )
+                                            : Image.asset(
+                                              "assets/images/pngaaa 1.png",
+                                              width: 55 * w,
+                                            ),
                                   ),
                                 ),
-                                Text(
-                                  "david012@cabzing",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14 * w,
-                                    color: const Color(0xFFB5CDFE),
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: -0.06 * 14 * w,
-                                  ),
+
+                                SizedBox(width: 14 * w),
+
+                                /// NAME
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      profile?.name ?? "David Arnold",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20 * w,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      profile?.email ?? "david012@cabzing",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14 * w,
+                                        color: const Color(0xFFB5CDFE),
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: -0.06 * 14 * w,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
+                            ),
+
+                            Image.asset("assets/images/edit.png", width: 24),
+
+                            SizedBox(width: 6 * w),
+                          ],
+                        ),
+
+                        SizedBox(height: 20 * w),
+
+                        /// 🔹 STATS ROW
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _statCard(
+                                icon: "assets/images/stars.png",
+                                title: "4.3★",
+                                subtitle1: "2,211",
+                                subtitle2: "rides",
+                                bg: const Color(0xFFB5CDFE),
+                                showTick: false,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: _statCard(
+                                icon: "assets/images/shield-tick.png",
+                                title: "KYC",
+                                subtitle1: "Verified",
+                                subtitle2: "",
+                                bg: const Color(0xFFA9C9C5),
+                                showTick: true,
+                              ),
                             ),
                           ],
                         ),
 
-                        Image.asset("assets/images/edit.png", width: 24),
+                        const SizedBox(height: 20),
 
-                        SizedBox(width: 6 * w),
-                      ],
-                    ),
-
-                    SizedBox(height: 20 * w),
-
-                    /// 🔹 STATS ROW
-                    Row(
-                      // mainAxisSize: MainAxisSize.max,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: _statCard(
-                            icon: "assets/images/stars.png",
-                            title: "4.3★",
-                            subtitle1: "2,211",
-                            subtitle2: "rides",
-                            bg: const Color(0xFFB5CDFE),
-                            showTick: false,
+                        /// 🔹 LOGOUT BUTTON
+                        InkWell(
+                          onTap: () async {
+                            await _controller.logout();
+                            if (mounted) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const LoginScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            }
+                          },
+                          child: Container(
+                            height: 67,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF040404),
+                              borderRadius: BorderRadius.circular(174),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/images/logout.png",
+                                  width: 24,
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  "Logout",
+                                  style: TextStyle(color: Color(0xFFEA6262)),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: _statCard(
-                            icon: "assets/images/shield-tick.png",
-                            title: "KYC",
-                            subtitle1: "Verified",
-                            subtitle2: "",
-                            bg: const Color(0xFFA9C9C5),
-                            showTick: true,
-                          ),
-                        ),
                       ],
                     ),
-
-                    SizedBox(height: 20),
-
-                    /// 🔹 LOGOUT BUTTON
-                    Container(
-                      height: 67,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF040404),
-                        borderRadius: BorderRadius.circular(174),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("assets/images/logout.png", width: 24),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Logout",
-                            style: TextStyle(color: Color(0xFFEA6262)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-            /// 🔹 MENU LIST
-            _menuItem("assets/images/badge-help.png", "Help"),
-            _menuItem("assets/images/search-status.png", "FAQ"),
-            _menuItem("assets/images/Add-Person.png", "Invite Friends"),
-            _menuItem("assets/images/shield-search.png", "Terms of Service"),
-            _menuItem("assets/images/security-safe.png", "Privacy Policy"),
+                /// 🔹 MENU LIST
+                _menuItem("assets/images/badge-help.png", "Help"),
+                _menuItem("assets/images/search-status.png", "FAQ"),
+                _menuItem("assets/images/Add-Person.png", "Invite Friends"),
+                _menuItem(
+                  "assets/images/shield-search.png",
+                  "Terms of Service",
+                ),
+                _menuItem("assets/images/security-safe.png", "Privacy Policy"),
 
-            const Spacer(),
-          ],
+                const Spacer(),
+              ],
+            );
+          },
         ),
       ),
 
       /// 🔹 BOTTOM NAV
-  bottomNavigationBar: bottomNav(context, w, 3),
+      bottomNavigationBar: bottomNav(context, w, 3),
     );
   }
 
@@ -201,7 +300,6 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(title, style: const TextStyle(color: Colors.white)),
-
                   if (showTick) ...[
                     const SizedBox(width: 6),
                     SizedBox(
@@ -212,13 +310,11 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ],
               ),
-
               if (subtitle1.isNotEmpty)
                 Text(
                   subtitle1,
                   style: const TextStyle(color: Color(0xFF565656)),
                 ),
-
               if (subtitle2.isNotEmpty)
                 Text(
                   subtitle2,
@@ -257,49 +353,4 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-  // /// 🔹 BOTTOM NAV
-  // static Widget _bottomNav(BuildContext context, double w) {
-  //   return Container(
-  //     height: 90,
-  //     padding: EdgeInsets.symmetric(horizontal: 40 * w),
-  //     color: Colors.black,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         navItem(context, "assets/images/home.png", DashboardScreen()),
-  //         navItem(context, "assets/images/route-square.png", LoginScreen()),
-  //         navItem(
-  //           context,
-  //           "assets/images/notification-bing.png",
-  //           LoginScreen(),
-  //         ),
-  //         Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Image.asset("assets/images/profile.png", width: 28),
-  //             const SizedBox(height: 4),
-  //             Container(
-  //               width: 7,
-  //               height: 7,
-  //               decoration: const BoxDecoration(
-  //                 color: Colors.white,
-  //                 shape: BoxShape.circle,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  //   static Widget navItem(BuildContext context, String icon, Widget screen) {
-  //     return InkWell(
-  //       onTap: () {
-  //         Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
-  //       },
-  //       child: Image.asset(icon, width: 28),
-  //     );
-  //   }
 }

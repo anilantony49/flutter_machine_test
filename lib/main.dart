@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vikn_codes_flutter_task/screens/dashboard_screen.dart';
 import 'package:vikn_codes_flutter_task/screens/login_screen.dart';
+import 'package:vikn_codes_flutter_task/screens/profile_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const DashboardScreen(),
+      home: const ProfileScreen(),
     );
   }
 }

@@ -1,9 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,73 +18,96 @@ class DashboardScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          /// 🔹 HEADER
-          // TextField Container
+          /// 🔹 Main Card
           Positioned(
-            top: 386 * h,
-            left: 36 * w,
+            top: 63 * h,
+            left: 18 * w,
             child: Container(
-              width: 358 * w,
-              height: 119 * h,
+              width: 388 * w,
+              height: 352 * h,
+              padding: EdgeInsets.symmetric(horizontal: 20 * w),
               decoration: BoxDecoration(
-                color: const Color(0xFF08131E),
-                borderRadius: BorderRadius.circular(11),
-                border: Border.all(color: const Color(0xFF1C3347), width: 1),
+                color: const Color(0xFF0F0F0F),
+                borderRadius: BorderRadius.circular(44 * w),
               ),
               child: Column(
                 children: [
-                  /// 🔹 USERNAME FIELD
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 60 * w,
-                      vertical: 8 * h,
-                    ),
-                    child: TextFormField(
-                      style: GoogleFonts.poppins(
-                        fontSize: 15 * w,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: "Username",
-                        labelStyle: GoogleFonts.poppins(
-                          fontSize: 14 * w,
-                          color: const Color(0xFF7D7D7D),
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 40 * h),
 
-                  /// 🔹 DIVIDER
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: const Color(0xFF1C3347),
-                  ),
+                  /// 🔹 Profile Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      /// LEFT SIDE (Avatar + Name)
+                      Row(
+                        children: [
+                          /// Avatar
+                          Container(
+                            width: 100 * w,
+                            height: 100 * w,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF000000),
+                              borderRadius: BorderRadius.circular(33 * w),
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                width: 55.86 * w,
+                                height: 73.88 * h,
+                                child: Image.asset(
+                                  "assets/images/pngaaa 1.png",
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
 
-                  /// 🔹 PASSWORD FIELD
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 60 * w,
-                      vertical: 8 * h,
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      style: GoogleFonts.poppins(
-                        fontSize: 15 * w,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                          SizedBox(width: 12 * w),
+
+                          /// Name + Email
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "David Arnold",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 20 * w,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 4 * h),
+                              Text(
+                                "david012@cabzing",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14 * w,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: -0.06 * 14 * w,
+                                  color: const Color(0xFFB5CDFE),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: GoogleFonts.poppins(
-                          fontSize: 14 * w,
-                          color: const Color(0xFF7D7D7D),
+
+                      /// RIGHT SIDE (Edit Icon)
+                      Container(
+                        width: 40 * w,
+                        height: 40 * w,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF131313),
+                          borderRadius: BorderRadius.circular(12 * w),
                         ),
-                        border: InputBorder.none,
+                        child: Icon(
+                          Icons.edit,
+                          size: 20 * w,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),

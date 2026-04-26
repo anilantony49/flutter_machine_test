@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
 import 'package:vikn_codes_flutter_task/widgets/invoice_box_row_widget.dart';
+import '../../data/datasources/sale_remote_data_source.dart';
+import '../../data/repositories/sale_repository_impl.dart';
+import '../../domain/usecases/get_sales_usecase.dart';
+import '../controllers/sale_list_controller.dart';
 
 class SalesListScreen extends StatefulWidget {
   const SalesListScreen({super.key});
@@ -11,7 +14,26 @@ class SalesListScreen extends StatefulWidget {
 }
 
 class _SalesListScreenState extends State<SalesListScreen> {
+  late final SaleListController _controller;
+  final _searchController = TextEditingController();
   double _opacity = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    final remote = SaleRemoteDataSourceImpl();
+    final repo = SaleRepositoryImpl(remoteDataSource: remote);
+    final usecase = GetSalesUseCase(repo);
+    _controller = SaleListController(getSalesUseCase: usecase);
+    _controller.fetchSales();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _handleTap() {
     setState(() => _opacity = 0.5);
@@ -31,8 +53,6 @@ class _SalesListScreenState extends State<SalesListScreen> {
           padding: EdgeInsets.symmetric(horizontal: 18 * w),
           child: Column(
             children: [
-              // const SizedBox(height: 70),
-
               /// 🔹 HEADER
               Padding(
                 padding: const EdgeInsets.only(left: 18, top: 70),
@@ -42,7 +62,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                       onTap: () => Navigator.pop(context),
                       child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       "Invoices",
                       style: GoogleFonts.poppins(
@@ -63,7 +83,6 @@ class _SalesListScreenState extends State<SalesListScreen> {
               /// 🔹 SEARCH + FILTER
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-
                 child: Row(
                   children: [
                     /// SEARCH
@@ -74,7 +93,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFF08131E),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Color(0xFF1C3347)),
+                          border: Border.all(color: const Color(0xFF1C3347)),
                         ),
                         child: Row(
                           children: [
@@ -83,12 +102,22 @@ class _SalesListScreenState extends State<SalesListScreen> {
                               width: 20,
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              "Search",
-                              style: GoogleFonts.poppins(
-                                color: Color(0xFF8A8A8A),
-                                fontSize: 15 * w,
-                                fontWeight: FontWeight.w400,
+                            Expanded(
+                              child: TextField(
+                                controller: _searchController,
+                                style: GoogleFonts.poppins(color: Colors.white),
+                                decoration: InputDecoration(
+                                  hintText: "Search",
+                                  hintStyle: GoogleFonts.poppins(
+                                    color: const Color(0xFF8A8A8A),
+                                    fontSize: 15 * w,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (value) {
+                                  _controller.updateSearchQuery(value);
+                                },
                               ),
                             ),
                           ],
@@ -107,14 +136,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const DashboardScreen(),
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Row(
                           children: [
                             Image.asset(
@@ -143,26 +165,64 @@ class _SalesListScreenState extends State<SalesListScreen> {
 
               const SizedBox(height: 10),
 
-              /// 🔹 LIST CONTAINER
               Expanded(
-                child: GestureDetector(
-                  onTap: _handleTap,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: _opacity,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        // color: const Color(0xFF0F0F0F),
-                        borderRadius: BorderRadius.circular(16),
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, _) {
+                    if (_controller.isLoading && _controller.sales.isEmpty) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (_controller.errorMessage != null &&
+                        _controller.sales.isEmpty) {
+                      return Center(
+                        child: Text(
+                          _controller.errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
+                    }
+
+                    if (_controller.sales.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No sales found",
+                          style: GoogleFonts.poppins(color: Colors.white),
+                        ),
+                      );
+                    }
+
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: _handleTap,
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: _opacity,
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: ListView.separated(
+                              itemCount: _controller.sales.length,
+                              separatorBuilder: (_, __) => gradientDivider(w),
+                              itemBuilder: (_, index) {
+                                final sale = _controller.sales[index];
+                                return invoiceRow(
+                                  w,
+                                  invoiceNo: sale.voucherNo,
+                                  customerName: sale.customerName,
+                                  status: sale.status,
+                                  amount: sale.grandTotal,
+                                  // currency: sale.currency,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                      child: ListView.separated(
-                        itemCount: 4,
-                        separatorBuilder: (_, __) => gradientDivider(w),
-                        itemBuilder: (_, index) => invoiceRow(w, 1),
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ],

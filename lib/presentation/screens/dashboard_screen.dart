@@ -15,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            
             children: [
               _buildHeader(),
               const SizedBox(height: 10),

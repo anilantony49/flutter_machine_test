@@ -1,52 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget invoiceRow(double w, double h) {
+Widget invoiceRow(
+  double w, {
+  required String invoiceNo,
+  required String customerName,
+  required String status,
+  required double amount,
+  // required String currency,
+}) {
   return Container(
     width: double.infinity,
-    height: 57 * h,
-    padding: EdgeInsets.symmetric(horizontal: 16 * w),
+    padding: EdgeInsets.symmetric(horizontal: 16 * w, vertical: 8),
     child: Row(
       children: [
         /// LEFT SIDE
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "#",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15 * w,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF888888),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "#",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15 * w,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF888888),
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: "Invoice No",
-                    style: GoogleFonts.poppins(
-                      fontSize: 13 * w,
-                      color: Colors.white,
+                    TextSpan(
+                      text: invoiceNo,
+                      style: GoogleFonts.poppins(
+                        fontSize: 13 * w,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-
-            Text(
-              "Customer Name",
-              style: GoogleFonts.poppins(
-                fontSize: 14 * w,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
+              Text(
+                customerName,
+                style: GoogleFonts.poppins(
+                  fontSize: 14 * w,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-
-        const Spacer(),
 
         /// RIGHT SIDE
         Column(
@@ -54,24 +61,27 @@ Widget invoiceRow(double w, double h) {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              "Pending",
+              status,
               style: GoogleFonts.poppins(
                 fontSize: 13 * w,
-                color: Color(0xFFE81C1C),
+                color:
+                    status.toLowerCase() == 'pending'
+                        ? const Color(0xFFE81C1C)
+                        : Colors.green,
               ),
             ),
             RichText(
               text: TextSpan(
                 children: [
+                  // TextSpan(
+                  //   text: "$currency. ",
+                  //   style: GoogleFonts.poppins(
+                  //     fontSize: 12 * w,
+                  //     color: const Color(0xFF888888),
+                  //   ),
+                  // ),
                   TextSpan(
-                    text: "SAR. ",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12 * w,
-                      color: Color(0xFF888888),
-                    ),
-                  ),
-                  TextSpan(
-                    text: "10,000.00",
+                    text: amount.toStringAsFixed(2),
                     style: GoogleFonts.poppins(
                       fontSize: 14 * w,
                       color: Colors.white,

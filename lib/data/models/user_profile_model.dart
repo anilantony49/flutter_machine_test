@@ -9,10 +9,13 @@ class UserProfileModel extends UserProfile {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? {};
+    
+    final userData = data is Map && data.containsKey('data') ? data['data'] : data;
+    
     return UserProfileModel(
-      name: data['first_name'] ?? data['username'] ?? 'No Name',
-      email: data['email'] ?? 'No Email',
-      profilePic: data['profile_pic'],
+      name: userData['first_name'] ?? userData['username'] ?? userData['CustomerName'] ?? userData['Fullname'] ?? 'No Name',
+      email: userData['email'] ?? 'No Email',
+      profilePic: userData['profile_pic'],
     );
   }
 }

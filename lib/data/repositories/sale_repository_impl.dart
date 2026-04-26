@@ -16,10 +16,12 @@ class SaleRepositoryImpl implements SaleRepository {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
     final userId = prefs.getInt('user_id') ?? 0;
+    final companyId = prefs.getString('company_id') ?? '1901b825-fe6f-418d-b5f0-7223d0040d08';
 
     return await remoteDataSource.fetchSales(
       token: token,
       userId: userId,
+      companyId: companyId,
       pageNo: pageNo,
       searchQuery: searchQuery,
     );

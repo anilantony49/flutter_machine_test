@@ -5,13 +5,16 @@ class UserModel extends User {
     required super.id,
     required super.token,
     required super.username,
+    required super.companyId,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'];
     return UserModel(
-      id: json['data']['user_id'],
-      token: json['data']['access'],
-      username: json['data']['username'],
+      id: data['user_id'] ?? 0,
+      token: data['access'] ?? '',
+      username: data['username'] ?? '',
+      companyId: (data['CompanyID'] ?? data['company_id'] ?? '').toString(),
     );
   }
 }

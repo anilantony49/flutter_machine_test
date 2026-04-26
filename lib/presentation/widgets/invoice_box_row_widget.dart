@@ -7,7 +7,7 @@ Widget invoiceRow(
   required String customerName,
   required String status,
   required double amount,
-  // required String currency,
+  required String currency,
 }) {
   return Container(
     width: double.infinity,
@@ -67,19 +67,23 @@ Widget invoiceRow(
                 color:
                     status.toLowerCase() == 'pending'
                         ? const Color(0xFFE81C1C)
+                        : status.toLowerCase() == 'cancelled'
+                        ? Colors.grey
+                        : status.toLowerCase() == 'invoiced'
+                        ? Colors.blue
                         : Colors.green,
               ),
             ),
             RichText(
               text: TextSpan(
                 children: [
-                  // TextSpan(
-                  //   text: "$currency. ",
-                  //   style: GoogleFonts.poppins(
-                  //     fontSize: 12 * w,
-                  //     color: const Color(0xFF888888),
-                  //   ),
-                  // ),
+                  TextSpan(
+                    text: "$currency. ",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12 * w,
+                      color: const Color(0xFF888888),
+                    ),
+                  ),
                   TextSpan(
                     text: amount.toStringAsFixed(2),
                     style: GoogleFonts.poppins(

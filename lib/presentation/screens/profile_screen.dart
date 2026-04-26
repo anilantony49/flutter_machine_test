@@ -1,8 +1,7 @@
- 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vikn_codes_flutter_task/presentation/screens/login_screen.dart';
-import 'package:vikn_codes_flutter_task/widgets/bottom_nav_widget.dart';
+import 'package:vikn_codes_flutter_task/presentation/widgets/bottom_nav_widget.dart';
 import '../../data/datasources/profile_remote_data_source.dart';
 import '../../data/repositories/profile_repository_impl.dart';
 import '../../domain/usecases/profile_usecases.dart';
@@ -52,31 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (_controller.errorMessage != null &&
-                _controller.profile == null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      _controller.errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () => _controller.fetchProfile(),
-                      child: const Text("Retry"),
-                    ),
-                  ],
-                ),
-              );
-            }
-
             final profile = _controller.profile;
 
             return Column(
               children: [
-                /// 🔹 TOP CARD
+                ///   TOP CARD
                 Padding(
                   padding: EdgeInsets.only(
                     left: 18 * w,
@@ -141,7 +120,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      profile?.name ?? "David Arnold",
+                                      profile?.name != "No Name" &&
+                                              profile?.name != null
+                                          ? profile!.name
+                                          : "David Arnold",
                                       style: GoogleFonts.poppins(
                                         fontSize: 20 * w,
                                         color: Colors.white,
@@ -149,7 +131,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                     Text(
-                                      profile?.email ?? "david012@cabzing",
+                                      profile?.email != "No Email" &&
+                                              profile?.email != null
+                                          ? profile!.email
+                                          : "david012@cabzing",
                                       style: GoogleFonts.poppins(
                                         fontSize: 14 * w,
                                         color: const Color(0xFFB5CDFE),
@@ -170,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         SizedBox(height: 20 * w),
 
-                        /// 🔹 STATS ROW
+                        ///   STATS ROW
                         Row(
                           children: [
                             Expanded(
@@ -180,10 +165,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 subtitle1: "2,211",
                                 subtitle2: "rides",
                                 bg: const Color(0xFFB5CDFE),
+                                w: w,
                                 showTick: false,
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10 * w),
                             Expanded(
                               child: _statCard(
                                 icon: "assets/images/shield-tick.png",
@@ -191,6 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 subtitle1: "Verified",
                                 subtitle2: "",
                                 bg: const Color(0xFFA9C9C5),
+                                w: w,
                                 showTick: true,
                               ),
                             ),
@@ -199,11 +186,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         const SizedBox(height: 20),
 
-                        /// 🔹 LOGOUT BUTTON
+                        ///   LOGOUT BUTTON
                         InkWell(
                           onTap: () async {
                             await _controller.logout();
                             if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Logout successfully',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  backgroundColor: const Color(0xFF0E75F4),
+                                ),
+                              );
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
@@ -214,22 +212,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             }
                           },
                           child: Container(
-                            height: 67,
+                            height: 67 * w,
                             decoration: BoxDecoration(
                               color: const Color(0xFF040404),
-                              borderRadius: BorderRadius.circular(174),
+                              borderRadius: BorderRadius.circular(174 * w),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
                                   "assets/images/logout.png",
-                                  width: 24,
+                                  width: 24 * w,
                                 ),
-                                const SizedBox(width: 10),
-                                const Text(
+                                SizedBox(width: 10 * w),
+                                Text(
                                   "Logout",
-                                  style: TextStyle(color: Color(0xFFEA6262)),
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xFFEA6262),
+                                    fontSize: 16 * w,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ],
                             ),
@@ -242,15 +244,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 const SizedBox(height: 30),
 
-                /// 🔹 MENU LIST
-                _menuItem("assets/images/badge-help.png", "Help"),
-                _menuItem("assets/images/search-status.png", "FAQ"),
-                _menuItem("assets/images/Add-Person.png", "Invite Friends"),
+                ///  MENU LIST
+                _menuItem("assets/images/badge-help.png", "Help", w),
+                _menuItem("assets/images/search-status.png", "FAQ", w),
+                _menuItem("assets/images/Add-Person.png", "Invite Friends", w),
                 _menuItem(
                   "assets/images/shield-search.png",
                   "Terms of Service",
+                  w,
                 ),
-                _menuItem("assets/images/security-safe.png", "Privacy Policy"),
+                _menuItem(
+                  "assets/images/security-safe.png",
+                  "Privacy Policy",
+                  w,
+                ),
 
                 const Spacer(),
               ],
@@ -259,52 +266,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
 
-      /// 🔹 BOTTOM NAV
+      ///   BOTTOM NAV
       bottomNavigationBar: bottomNav(context, w, 3),
     );
   }
 
-  /// 🔹 STAT CARD
+  ///   STAT CARD
   static Widget _statCard({
     required String icon,
     required String title,
     required String subtitle1,
     required String subtitle2,
     required Color bg,
+    required double w,
     bool showTick = false,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12 * w),
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(33),
+        borderRadius: BorderRadius.circular(33 * w),
       ),
       child: Row(
         children: [
           Container(
-            width: 38,
-            height: 78,
-            padding: const EdgeInsets.all(10),
+            width: 38 * w,
+            height: 78 * w,
+            padding: EdgeInsets.all(10 * w),
             decoration: BoxDecoration(
               color: bg,
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: BorderRadius.circular(100 * w),
             ),
-            child: Image.asset(icon, width: 18),
+            child: Image.asset(icon, width: 18 * w),
           ),
 
-          const SizedBox(width: 10),
+          SizedBox(width: 10 * w),
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.white)),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14 * w,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   if (showTick) ...[
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6 * w),
                     SizedBox(
-                      width: 10,
-                      height: 10,
+                      width: 10 * w,
+                      height: 10 * w,
                       child: Image.asset("assets/images/Vector.png"),
                     ),
                   ],
@@ -313,12 +328,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (subtitle1.isNotEmpty)
                 Text(
                   subtitle1,
-                  style: const TextStyle(color: Color(0xFF565656)),
+                  style: GoogleFonts.poppins(
+                    color: const Color(0xFF565656),
+                    fontSize: 12 * w,
+                  ),
                 ),
               if (subtitle2.isNotEmpty)
                 Text(
                   subtitle2,
-                  style: const TextStyle(color: Color(0xFFB5CDFE)),
+                  style: GoogleFonts.poppins(
+                    color: const Color(0xFFB5CDFE),
+                    fontSize: 12 * w,
+                  ),
                 ),
             ],
           ),
@@ -327,28 +348,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /// 🔹 MENU ITEM
-  static Widget _menuItem(String icon, String title) {
+  ///   MENU ITEM
+  static Widget _menuItem(String icon, String title, double w) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 24),
+      padding: EdgeInsets.symmetric(horizontal: 50 * w, vertical: 24 * w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Image.asset(icon, width: 24),
-              const SizedBox(width: 12),
+              Image.asset(icon, width: 24 * w),
+              SizedBox(width: 12 * w),
               Text(
                 title,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 15 * w,
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
-          const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white),
+          Icon(Icons.arrow_forward_ios, size: 14 * w, color: Colors.white),
         ],
       ),
     );

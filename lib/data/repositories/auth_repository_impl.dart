@@ -14,6 +14,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', userModel.token);
     await prefs.setInt('user_id', userModel.id);
+    await prefs.setString('company_id', userModel.companyId);
     return userModel;
   }
 }

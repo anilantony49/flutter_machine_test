@@ -6,7 +6,6 @@ class SaleModel extends Sale {
     required super.customerName,
     required super.status,
     required super.grandTotal,
-    // super.currency,
   });
 
   factory SaleModel.fromJson(Map<String, dynamic> json) {
@@ -15,7 +14,6 @@ class SaleModel extends Sale {
       customerName: json['CustomerName'] ?? '',
       status: json['Status'] ?? '',
       grandTotal: (json['GrandTotal'] ?? 0).toDouble(),
-      // currency: json['CurrencySymbol'] ?? 'SAR',
     );
   }
 }

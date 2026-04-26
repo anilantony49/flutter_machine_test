@@ -20,12 +20,12 @@ class FilterPage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: 18 * w, right: 18 * w, top: 72 * h),
+          padding: EdgeInsets.only(left: 18 * w, right: 18 * w, top: 24 * h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 🔹 HEADER
-              // SizedBox(height: 72 * h),
+              ///   HEADER
+               
               Row(
                 children: [
                   IconButton(
@@ -121,7 +121,7 @@ class FilterPage extends StatelessWidget {
                 ),
               ),
 
-              /// 🔹 DATE PICKERS
+              ///   DATE PICKERS
               SizedBox(height: 20 * h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -135,7 +135,7 @@ class FilterPage extends StatelessWidget {
               SizedBox(height: 20 * h),
               _divider(),
 
-              /// 🔹 STATUS CHIPS
+              ///   STATUS CHIPS
               SizedBox(height: 20 * h),
               Row(
                 children: [
@@ -147,14 +147,14 @@ class FilterPage extends StatelessWidget {
                 ],
               ),
 
-              /// 🔹 CUSTOMER FIELD
+              ///   CUSTOMER FIELD
               SizedBox(height: 20 * h),
               _inputField("Customer"),
 
               SizedBox(height: 20 * h),
               _gradientDivider(),
 
-              /// 🔹 SELECTED CUSTOMER
+              ///   SELECTED CUSTOMER
               SizedBox(height: 20 * h),
               _selectedCustomer("savad farooque"),
 
@@ -166,7 +166,7 @@ class FilterPage extends StatelessWidget {
     );
   }
 
-  /// 🔹 Widgets
+  ///   Widgets
 
   Widget _divider() {
     return Container(height: 1, color: const Color(0xFF1C3347));

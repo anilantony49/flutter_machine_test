@@ -6,6 +6,7 @@ abstract class SaleRemoteDataSource {
   Future<List<SaleModel>> fetchSales({
     required String token,
     required int userId,
+    required String companyId,
     int pageNo = 1,
     int itemsPerPage = 10,
     String? searchQuery,
@@ -20,6 +21,7 @@ class SaleRemoteDataSourceImpl implements SaleRemoteDataSource {
   Future<List<SaleModel>> fetchSales({
     required String token,
     required int userId,
+    required String companyId,
     int pageNo = 1,
     int itemsPerPage = 10,
     String? searchQuery,
@@ -32,7 +34,7 @@ class SaleRemoteDataSourceImpl implements SaleRemoteDataSource {
       },
       body: jsonEncode({
         "BranchID": 1,
-        "CompanyID": "1901b825-fe6f-418d-b5f0-7223d0040d08",
+        "CompanyID": companyId,
         "CreatedUserID": userId,
         "PriceRounding": 2,
         "page_no": pageNo,
@@ -46,13 +48,30 @@ class SaleRemoteDataSourceImpl implements SaleRemoteDataSource {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['success'] == 6000) {
-        final List data = jsonResponse['data'] ?? [];
 
-        return data.map((item) => SaleModel.fromJson(item)).toList();
+      // Handle both int and String success codes
+      final success = jsonResponse['success'];
+      if (success == 6000 || success == "6000") {
+        final rawData = jsonResponse['data'];
+        List dataList = [];
+
+        if (rawData is List) {
+          dataList = rawData;
+        } else if (rawData is Map) {
+          // Try to find the list in common nested locations
+          if (rawData['data'] is List) {
+            dataList = rawData['data'];
+          } else if (rawData['data'] is Map && rawData['data']['data'] is List) {
+            dataList = rawData['data']['data'];
+          } else if (rawData.containsKey('data') && rawData['data'] is List) {
+             dataList = rawData['data'];
+          }
+        }
+
+        return dataList.map((item) => SaleModel.fromJson(item)).toList();
       } else {
-
-        throw Exception(jsonResponse['message'] ?? 'Failed to fetch sales');
+        final msg = jsonResponse['message'] ?? 'Failed to fetch sales';
+        throw Exception('$msg (Code: $success)');
       }
     } else {
       throw Exception('Server Error: ${response.statusCode}');
@@ -60,64 +79,4 @@ class SaleRemoteDataSourceImpl implements SaleRemoteDataSource {
   }
 }
 
-// class SaleRemoteDataSourceImpl implements SaleRemoteDataSource {
-//   final String baseUrl =
-//       'https://www.api.viknbooks.com/api/v10/sales/sale-list-page/';
-
-//   @override
-//   Future<List<SaleModel>> fetchSales({
-//     required String token,
-//     required int userId,
-//     int pageNo = 1,
-//     int itemsPerPage = 10,
-//     String? searchQuery,
-//   }) async {
-//     final body = {
-//       "BranchID": 1,
-//       "CompanyID": "1901b825-fe6f-418d-b5f0-7223d0040d08",
-//       "CreatedUserID": userId, // 🔁 try userId.toString() if fails
-//       "PriceRounding": 2,
-//       "page_no": pageNo,
-//       "items_per_page": itemsPerPage,
-//       "type": "Sales",
-//       "WarehouseID": 1,
-//       if (searchQuery != null && searchQuery.isNotEmpty) "search": searchQuery,
-//     };
-
-//     print("🔹 REQUEST BODY: $body");
-
-//     final response = await http.post(
-//       Uri.parse(baseUrl),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//       body: jsonEncode(body),
-//     );
-
-//     print("🔹 STATUS CODE: ${response.statusCode}");
-//     print("🔹 RESPONSE BODY: ${response.body}");
-
-//     if (response.statusCode == 200) {
-//       final jsonResponse = jsonDecode(response.body);
-
-//       /// 🔥 IMPORTANT DEBUG
-//       if (jsonResponse['success'] != 6000) {
-//         throw Exception(
-//           "API ERROR: ${jsonResponse['message'] ?? jsonResponse}",
-//         );
-//       }
-
-//       final List data = jsonResponse['data'] ?? [];
-
-      
-
-//       return data.map((item) => SaleModel.fromJson(item)).toList();
-//     } else {
-//       throw Exception(
-//         "SERVER ERROR: ${response.statusCode} - ${response.body}",
-        
-//       );
-//     }
-//   }
-// }
+ 

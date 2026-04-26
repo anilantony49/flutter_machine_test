@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vikn_codes_flutter_task/presentation/screens/dashboard_screen.dart';
 import 'package:vikn_codes_flutter_task/widgets/invoice_box_row_widget.dart';
 
@@ -14,770 +15,165 @@ class _SalesListScreenState extends State<SalesListScreen> {
 
   void _handleTap() {
     setState(() => _opacity = 0.5);
-
     Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) {
-        setState(() => _opacity = 1.0);
-      }
+      if (mounted) setState(() => _opacity = 1.0);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    const baseWidth = 430;
-    const baseHeight = 932;
-
-    final w = screenWidth / baseWidth;
-    final h = screenHeight / baseHeight;
+    final w = MediaQuery.of(context).size.width / 430;
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
-          children: [
-            /// 🔹 Back Button
-            Positioned(
-              top: 72 * h,
-              left: 18 * w,
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
-                borderRadius: BorderRadius.circular(3 * w),
-                child: SizedBox(
-                  width: 24 * w,
-                  height: 24 * w,
-                  child: Icon(Icons.arrow_back, color: Colors.white),
-                ),
-              ),
-            ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 18 * w),
+          child: Column(
+            children: [
+              // const SizedBox(height: 70),
 
-            Positioned(
-              top: 72 * h,
-              left: 54 * w,
-              child: SizedBox(
-                width: 67 * w,
-                height: 24 * h,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Invoices",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16 * w,
-                      fontWeight: FontWeight.w500, // Medium
-                      height: 1.0, // line-height: 100%
-                      letterSpacing: 0,
-                      color: Colors.white, // use white for dark UI
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            Positioned(
-              top: 114 * h,
-              left: 0,
-              right: 0,
-              child: Container(height: 1, color: const Color(0xFF1C3347)),
-            ),
-
-            Positioned(
-              top: 125 * h,
-              left: 22 * w,
-              child: Container(
-                width: 236 * w,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Color(0xFF08131E),
-                  borderRadius: BorderRadius.circular(8 * w),
-                  border: Border.all(color: Color(0xFF1C3347)),
-                ),
-
+              /// 🔹 HEADER
+              Padding(
+                padding: const EdgeInsets.only(left: 18, top: 70),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12 * w),
-
-                      child: SizedBox(
-                        width: 20 * w,
-                        height: 20 * w,
-                        child: Image.asset("assets/images/Magnifier.png"),
-                      ),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
+                    SizedBox(width: 12),
                     Text(
-                      "Search",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15 * w,
-                        fontWeight: FontWeight.w400,
-                        height: 1.0, // line-height: 100%
-                        letterSpacing: 0,
-                        color: const Color(0xFF8A8A8A), // text color
+                      "Invoices",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16 * w,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
 
-            Positioned(
-              top: 125 * h,
-              left: 271 * w,
-              child: Container(
-                width: 143 * w,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1B2B30), // background
-                  borderRadius: BorderRadius.circular(8 * w),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 300),
-                        pageBuilder:
-                            (_, __, ___) => DashboardScreen(), // 🔁 replace
-                        transitionsBuilder: (_, animation, __, child) {
-                          return FadeTransition(
-                            opacity: CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOut,
+              const SizedBox(height: 10),
+              _divider(),
+
+              const SizedBox(height: 10),
+
+              /// 🔹 SEARCH + FILTER
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+
+                child: Row(
+                  children: [
+                    /// SEARCH
+                    Expanded(
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF08131E),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Color(0xFF1C3347)),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/Magnifier.png",
+                              width: 20,
                             ),
-                            child: child,
+                            const SizedBox(width: 8),
+                            Text(
+                              "Search",
+                              style: GoogleFonts.poppins(
+                                color: Color(0xFF8A8A8A),
+                                fontSize: 15 * w,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    /// FILTER BUTTON
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1B2B30),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const DashboardScreen(),
+                            ),
                           );
                         },
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/list-filter.png",
+                              width: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              "Add Filters",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15 * w,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(8 * w),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16 * w, 7, 16 * w, 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 24 * h,
-                          width: 24 * w,
-                          child: Image.asset("assets/images/list-filter.png"),
-                        ),
-
-                        SizedBox(width: 9 * w), // gap: 9px
-
-                        Text(
-                          "Add Filters",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15 * w,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0,
-                            height: h * 1.0, // line-height: 100%
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ),
 
-            Positioned(
-              top: 186 * h,
-              left: 0,
-              right: 0,
-              child: Container(height: 1, color: const Color(0xFF1C3347)),
-            ),
+              const SizedBox(height: 10),
+              _divider(),
 
-            Positioned(
-              top: 194 * h,
-              left: 24 * w,
-              child: Container(
-                width: 387 * w,
-                height: 291 * h,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F0F0F),
-                  borderRadius: BorderRadius.circular(16 * w),
-                ),
+              const SizedBox(height: 10),
+
+              /// 🔹 LIST CONTAINER
+              Expanded(
                 child: GestureDetector(
                   onTap: _handleTap,
-
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
                     opacity: _opacity,
-                    child:
-                    //  Column(
-                    //   children: [
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 57 * h,
-                    //       color: Colors.grey,
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.end,
-                    //         children: [
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 79 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "#Invoice No",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight:
-                    //                           FontWeight.w400, // Regular
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors.white, // adjust if needed
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 117 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "Customer Name",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 14 * w,
-                    //                       fontWeight: FontWeight.w500, // Medium
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors
-                    //                               .white, // use white for dark UI
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Spacer(),
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.end,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 53 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment:
-                    //                       Alignment
-                    //                           .centerRight, // right aligned
-                    //                   child: Text(
-                    //                     "Pending",
-                    //                     textAlign: TextAlign.right,
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight: FontWeight.w400,
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color: const Color(
-                    //                         0xFFE81C1C,
-                    //                       ), // red text
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 92 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerRight,
-                    //                   child: RichText(
-                    //                     textAlign: TextAlign.right,
-                    //                     text: TextSpan(
-                    //                       children: [
-                    //                         TextSpan(
-                    //                           text: "SAR. ",
-                    //                           style: TextStyle(
-                    //                             fontFamily: 'Poppins',
-                    //                             fontSize: 12 * w,
-                    //                             fontWeight: FontWeight.w400,
-                    //                             height:
-                    //                                 1.0, // line-height: 100%
-                    //                             letterSpacing: 0,
-                    //                             color: Color(0xFF888888),
-                    //                           ),
-                    //                         ),
-                    //                         TextSpan(
-                    //                           text: "10,000.00",
-                    //                           style: TextStyle(
-                    //                             fontSize: 12 * w,
-                    //                             color: Colors.white,
-                    //                             fontWeight: FontWeight.w400,
-                    //                           ),
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           SizedBox(width: 16 * w), // right padding
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     SizedBox(height: 10 * h), // gap between rows
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 1, // must be 1, not 0
-                    //       decoration: const BoxDecoration(
-                    //         gradient: LinearGradient(
-                    //           begin: Alignment.centerLeft,
-                    //           end: Alignment.centerRight,
-                    //           colors: [
-                    //             Color(0x0008131E), // transparent
-                    //             Color(0xFF1C3347), // center color
-                    //             Color(0x0008131E), // transparent
-                    //           ],
-                    //           stops: [0.0, 0.4844, 1.0], // matches 48.44%
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 57 * h,
-                    //       color: Colors.grey,
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.end,
-                    //         children: [
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 79 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "#Invoice No",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight:
-                    //                           FontWeight.w400, // Regular
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors.white, // adjust if needed
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 117 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "Customer Name",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 14 * w,
-                    //                       fontWeight: FontWeight.w500, // Medium
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors
-                    //                               .white, // use white for dark UI
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Spacer(),
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.end,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 53 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment:
-                    //                       Alignment
-                    //                           .centerRight, // right aligned
-                    //                   child: Text(
-                    //                     "Pending",
-                    //                     textAlign: TextAlign.right,
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight: FontWeight.w400,
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color: const Color(
-                    //                         0xFFE81C1C,
-                    //                       ), // red text
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 92 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerRight,
-                    //                   child: RichText(
-                    //                     textAlign: TextAlign.right,
-                    //                     text: TextSpan(
-                    //                       children: [
-                    //                         TextSpan(
-                    //                           text: "SAR. ",
-                    //                           style: TextStyle(
-                    //                             fontFamily: 'Poppins',
-                    //                             fontSize: 12 * w,
-                    //                             fontWeight: FontWeight.w400,
-                    //                             height:
-                    //                                 1.0, // line-height: 100%
-                    //                             letterSpacing: 0,
-                    //                             color: Color(0xFF888888),
-                    //                           ),
-                    //                         ),
-                    //                         TextSpan(
-                    //                           text: "10,000.00",
-                    //                           style: TextStyle(
-                    //                             fontSize: 12 * w,
-                    //                             color: Colors.white,
-                    //                             fontWeight: FontWeight.w400,
-                    //                           ),
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           SizedBox(width: 16 * w), // right padding
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     SizedBox(height: 10 * h), // gap between rows
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 1, // must be 1, not 0
-                    //       decoration: const BoxDecoration(
-                    //         gradient: LinearGradient(
-                    //           begin: Alignment.centerLeft,
-                    //           end: Alignment.centerRight,
-                    //           colors: [
-                    //             Color(0x0008131E), // transparent
-                    //             Color(0xFF1C3347), // center color
-                    //             Color(0x0008131E), // transparent
-                    //           ],
-                    //           stops: [0.0, 0.4844, 1.0], // matches 48.44%
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 57 * h,
-                    //       color: Colors.grey,
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.end,
-                    //         children: [
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 79 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "#Invoice No",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight:
-                    //                           FontWeight.w400, // Regular
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors.white, // adjust if needed
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 117 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "Customer Name",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 14 * w,
-                    //                       fontWeight: FontWeight.w500, // Medium
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors
-                    //                               .white, // use white for dark UI
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Spacer(),
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.end,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 53 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment:
-                    //                       Alignment
-                    //                           .centerRight, // right aligned
-                    //                   child: Text(
-                    //                     "Pending",
-                    //                     textAlign: TextAlign.right,
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight: FontWeight.w400,
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color: const Color(
-                    //                         0xFFE81C1C,
-                    //                       ), // red text
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 92 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerRight,
-                    //                   child: RichText(
-                    //                     textAlign: TextAlign.right,
-                    //                     text: TextSpan(
-                    //                       children: [
-                    //                         TextSpan(
-                    //                           text: "SAR. ",
-                    //                           style: TextStyle(
-                    //                             fontFamily: 'Poppins',
-                    //                             fontSize: 12 * w,
-                    //                             fontWeight: FontWeight.w400,
-                    //                             height:
-                    //                                 1.0, // line-height: 100%
-                    //                             letterSpacing: 0,
-                    //                             color: Color(0xFF888888),
-                    //                           ),
-                    //                         ),
-                    //                         TextSpan(
-                    //                           text: "10,000.00",
-                    //                           style: TextStyle(
-                    //                             fontSize: 12 * w,
-                    //                             color: Colors.white,
-                    //                             fontWeight: FontWeight.w400,
-                    //                           ),
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           SizedBox(width: 16 * w), // right padding
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     SizedBox(height: 10 * h), // gap between rows
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 1, // must be 1, not 0
-                    //       decoration: const BoxDecoration(
-                    //         gradient: LinearGradient(
-                    //           begin: Alignment.centerLeft,
-                    //           end: Alignment.centerRight,
-                    //           colors: [
-                    //             Color(0x0008131E), // transparent
-                    //             Color(0xFF1C3347), // center color
-                    //             Color(0x0008131E), // transparent
-                    //           ],
-                    //           stops: [0.0, 0.4844, 1.0], // matches 48.44%
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 57 * h,
-                    //       color: Colors.grey,
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.end,
-                    //         children: [
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 79 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "#Invoice No",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight:
-                    //                           FontWeight.w400, // Regular
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors.white, // adjust if needed
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 117 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerLeft,
-                    //                   child: Text(
-                    //                     "Customer Name",
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 14 * w,
-                    //                       fontWeight: FontWeight.w500, // Medium
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color:
-                    //                           Colors
-                    //                               .white, // use white for dark UI
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Spacer(),
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.end,
-                    //             children: [
-                    //               SizedBox(
-                    //                 width: 53 * w,
-                    //                 height: 20 * h,
-                    //                 child: Align(
-                    //                   alignment:
-                    //                       Alignment
-                    //                           .centerRight, // right aligned
-                    //                   child: Text(
-                    //                     "Pending",
-                    //                     textAlign: TextAlign.right,
-                    //                     style: TextStyle(
-                    //                       fontFamily: 'Poppins',
-                    //                       fontSize: 13 * w,
-                    //                       fontWeight: FontWeight.w400,
-                    //                       height: 1.0, // line-height: 100%
-                    //                       letterSpacing: 0,
-                    //                       color: const Color(
-                    //                         0xFFE81C1C,
-                    //                       ), // red text
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 92 * w,
-                    //                 height: 21 * h,
-                    //                 child: Align(
-                    //                   alignment: Alignment.centerRight,
-                    //                   child: RichText(
-                    //                     textAlign: TextAlign.right,
-                    //                     text: TextSpan(
-                    //                       children: [
-                    //                         TextSpan(
-                    //                           text: "SAR. ",
-                    //                           style: TextStyle(
-                    //                             fontFamily: 'Poppins',
-                    //                             fontSize: 12 * w,
-                    //                             fontWeight: FontWeight.w400,
-                    //                             height:
-                    //                                 1.0, // line-height: 100%
-                    //                             letterSpacing: 0,
-                    //                             color: Color(0xFF888888),
-                    //                           ),
-                    //                         ),
-                    //                         TextSpan(
-                    //                           text: "10,000.00",
-                    //                           style: TextStyle(
-                    //                             fontSize: 12 * w,
-                    //                             color: Colors.white,
-                    //                             fontWeight: FontWeight.w400,
-                    //                           ),
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           SizedBox(width: 16 * w), // right padding
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     SizedBox(height: 10 * h), // gap between rows
-                    //     Container(
-                    //       width: 387 * w,
-                    //       height: 1, // must be 1, not 0
-                    //       decoration: const BoxDecoration(
-                    //         gradient: LinearGradient(
-                    //           begin: Alignment.centerLeft,
-                    //           end: Alignment.centerRight,
-                    //           colors: [
-                    //             Color(0x0008131E), // transparent
-                    //             Color(0xFF1C3347), // center color
-                    //             Color(0x0008131E), // transparent
-                    //           ],
-                    //           stops: [0.0, 0.4844, 1.0], // matches 48.44%
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    ListView.separated(
-                      itemCount: 10,
-                      separatorBuilder: (_, __) => gradientDivider(w),
-                      itemBuilder: (_, index) => invoiceRow(w, h),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        // color: const Color(0xFF0F0F0F),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ListView.separated(
+                        itemCount: 4,
+                        separatorBuilder: (_, __) => gradientDivider(w),
+                        itemBuilder: (_, index) => invoiceRow(w, 1),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  /// 🔹 DIVIDER
+  Widget _divider() {
+    return Container(height: 1, color: const Color(0xFF1C3347));
   }
 }

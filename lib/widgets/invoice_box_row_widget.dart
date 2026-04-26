@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget invoiceRow(double w, double h) {
   return Container(
@@ -12,13 +13,31 @@ Widget invoiceRow(double w, double h) {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "#Invoice No",
-              style: TextStyle(fontSize: 13 * w, color: Colors.white),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "#",
+                    style: GoogleFonts.poppins(
+                      fontSize: 15 * w,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF888888),
+                    ),
+                  ),
+                  TextSpan(
+                    text: "Invoice No",
+                    style: GoogleFonts.poppins(
+                      fontSize: 13 * w,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
+
             Text(
               "Customer Name",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14 * w,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
@@ -36,21 +55,27 @@ Widget invoiceRow(double w, double h) {
           children: [
             Text(
               "Pending",
-              style: TextStyle(fontSize: 13 * w, color: Color(0xFFE81C1C)),
+              style: GoogleFonts.poppins(
+                fontSize: 13 * w,
+                color: Color(0xFFE81C1C),
+              ),
             ),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: "SAR. ",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 12 * w,
                       color: Color(0xFF888888),
                     ),
                   ),
                   TextSpan(
                     text: "10,000.00",
-                    style: TextStyle(fontSize: 14 * w, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 14 * w,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
